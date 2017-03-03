@@ -36,7 +36,7 @@
         </li>
       </ul>
     </div>
-    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <shopcart v-ref:shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
 </template>
 
@@ -107,8 +107,12 @@
         let el = foodList[index];
         this.foodsScroll.scrollToElement(el, 300);
       },
+      // 通过ref的方式获取到子组件B,调用B对应的method，参数为组件A的DOM
       _drop(target) {
-
+        // 体验优化，异步执行下落动画
+        this.$nextTick(() => {
+          this.$refs.shopcart.drop(target);
+        });
       },
       _initScroll() {
         this.menuScroll = new BScroll(this.$els.menuWrapper, {
@@ -140,6 +144,7 @@
       shopcart,
       cartcontrol
     },
+    // 这里用来接收子组件A传递的DOM,并将该DOM传递给子组件B
     events: {
       'cart.add'(target) {
         this._drop(target);
