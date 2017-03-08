@@ -22,13 +22,15 @@
           </div>
         </div>
         <div class="ball-container">
-          <transition name="drop">
-            <div v-for="ball in balls" v-show="ball.show" class="ball">
-              <div class="inner inner-hook"></div>
-            </div>
-          </transition>
+          <div v-for="ball in balls">
+            <transition name="drop" @before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
+              <div v-show="ball.show" class="ball">
+                <div class="inner inner-hook"></div>
+              </div>
+            </transition>
+          </div>
         </div>
-        <transition name="fold" @before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
+        <transition name="fold">
           <div class="shopcart-list" v-show="listShow">
             <div class="list-header">
               <h1 class="title">购物车</h1>
