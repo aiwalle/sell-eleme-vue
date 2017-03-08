@@ -223,7 +223,7 @@
           let inner = el.getElementsByClassName('inner-hook')[0];
           inner.style.webkitTransform = 'translate3d(0, 0, 0)';
           inner.style.transform = 'translate3d(0, 0, 0)';
-          // 这句代码是新增的代码
+          // 这句代码是新增的代码v2.0
           el.addEventListener('transitionend', done);
         });
       },
@@ -380,7 +380,7 @@
           left: 32px
           bottom: 22px
           z-index: 200
-          &.drop-transition
+          &.drop-enter-active, &.drop-leave-active
             transition: all 0.4s cubic-bezier(0.49, -0.29, 0.75, 0.41)
             .inner
               width: 16px

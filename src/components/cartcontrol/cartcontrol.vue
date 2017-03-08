@@ -29,7 +29,8 @@
           this.food.count++;
         }
         // 这里的逻辑是子组件B通过父组件A将对应的DOM对象传递给了子组件C
-        this.$dispatch('cart.add', event.target);
+        // this.$dispatch('cart.add', event.target);
+        this.$emit('add', event.target);
       },
       decreaseCart(event) {
         if (!event._constructed) {
