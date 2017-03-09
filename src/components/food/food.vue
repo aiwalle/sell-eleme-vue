@@ -18,7 +18,7 @@
             <span class="now">¥{{food.price}}</span><span class="old" v-show="food.oldPrice">¥{{food.oldPrice}}</span>
           </div>
           <div class="cartcontrol-wrapper">
-            <cartcontrol :food="food"></cartcontrol>
+            <cartcontrol @add="addFood" :food="food"></cartcontrol>
           </div>
           <transition name="fade">
             <div @click.stop.prevent="addFirst" class="buy" v-show="!food.count || food.count===0">加入购物车</div>
@@ -32,7 +32,7 @@
         <split></split>
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
+          <ratingselect @select="selectRating" @toggle="toggleContent" :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
           <div class="rating-wrapper">
             <ul v-show="food.ratings && food.ratings.length">
               <li v-show="needShow(rating.rateType,rating.text)" v-for="rating in food.ratings" class="rating-item border-1px">
@@ -99,6 +99,12 @@
           }
         });
       },
+      addFood(target) {
+        this.$emit('add', target);
+      },
+      // addTheCart(event) {
+      //   this.$emit('addGood', event.target);
+      // },
       hide() {
         this.showFlag = false;
       },
@@ -119,22 +125,35 @@
         } else {
           return type === this.selectType;
         }
-      }
-    },
-    events: {
-      'ratingtype.select'(type) {
+      },
+      selectRating(type) {
         this.selectType = type;
         this.$nextTick(() => {
           this.scroll.refresh();
         });
       },
-      'content.toggle'(onlyContent) {
-        this.onlyContent = onlyContent;
+      toggleContent(onlyContent) {
+        this.onlyContent = !this.onlyContent;
         this.$nextTick(() => {
           this.scroll.refresh();
         });
       }
     },
+    // 以下为vue1.0的代码
+    // events: {
+    //   'ratingtype.select'(type) {
+    //     this.selectType = type;
+    //     this.$nextTick(() => {
+    //       this.scroll.refresh();
+    //     });
+    //   },
+    //   'content.toggle'(onlyContent) {
+    //     this.onlyContent = onlyContent;
+    //     this.$nextTick(() => {
+    //       this.scroll.refresh();
+    //     });
+    //   }
+    // },
     filters: {
       formatDate(time) {
         let date = new Date(time);

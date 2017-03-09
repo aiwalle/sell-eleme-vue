@@ -25,7 +25,7 @@
         </div>
       </div>
       <split></split>
-      <ratingselect :select-type="selectType" :only-content="onlyContent" :ratings="ratings"></ratingselect>
+      <ratingselect @select="selectRating" @toggle="toggleContent" :selectType="selectType" :onlyContent="onlyContent" :ratings="ratings"></ratingselect>
       <div class="rating-wrapper">
         <ul>
           <li v-for="rating in ratings" v-show="needShow(rating.rateType, rating.text)" class="rating-item">
@@ -100,22 +100,35 @@
         } else {
           return type === this.selectType;
         }
-      }
-    },
-    events: {
-      'ratingtype.select'(type) {
+      },
+      selectRating(type) {
         this.selectType = type;
         this.$nextTick(() => {
           this.scroll.refresh();
         });
       },
-      'content.toggle'(onlyContent) {
-        this.onlyContent = onlyContent;
+      toggleContent(onlyContent) {
+        this.onlyContent = !this.onlyContent;
         this.$nextTick(() => {
           this.scroll.refresh();
         });
       }
     },
+    // 以下的代码在vue2.0中已经废弃
+    // events: {
+    //   'ratingtype.select'(type) {
+    //     this.selectType = type;
+    //     this.$nextTick(() => {
+    //       this.scroll.refresh();
+    //     });
+    //   },
+    //   'content.toggle'(onlyContent) {
+    //     this.onlyContent = onlyContent;
+    //     this.$nextTick(() => {
+    //       this.scroll.refresh();
+    //     });
+    //   }
+    // },
     filters: {
       formatDate(time) {
         let date = new Date(time);
